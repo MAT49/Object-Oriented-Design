@@ -7,11 +7,28 @@ public class DeckOfCards {
 	// would subclass the data structures to implement blackjack.
 	
 	public enum Suit{
-		Club (0), Diamond (1), Heart (2), Spade (3);
+		Club(0), Diamond(1), Heart(2), Spade(3); // Arguments passed to constructor
 		private int value;
-		private Suit(int v) { value = v; }
+		private Suit(int v) { value = v; } // Constructor, runs 4 times only
 		public int getValue() { return value;}
-		public static Suit getSuitFromValue(int value) { return null;  }
+		public static Suit getSuitFromValue(int value) {
+			Suit selected = null;
+			switch (value) {
+				case 0: 
+					selected = Club;
+					break;
+				case 1: 
+					selected = Diamond;
+					break;
+				case 2: 
+					selected = Heart;
+					break;
+				case 3: 
+					selected = Spade;
+					break;
+			}
+			return selected;
+		}
 	}
 	
 	public class Deck <T extends Card>{
@@ -40,7 +57,7 @@ public class DeckOfCards {
 			suit = s;
 		}
 		
-		public abstract int value();
+		public abstract int value(); // method to be fleshed out in inherited class
 		public Suit suit() { return suit; }
 		
 		// Checks if card is available to be given out
