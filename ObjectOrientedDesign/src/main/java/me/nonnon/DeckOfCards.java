@@ -12,22 +12,12 @@ public class DeckOfCards {
 		private Suit(int v) { value = v; } // Constructor, runs 4 times only
 		public int getValue() { return value;}
 		public static Suit getSuitFromValue(int value) {
-			Suit selected = null;
-			switch (value) {
-				case 0: 
-					selected = Club;
-					break;
-				case 1: 
-					selected = Diamond;
-					break;
-				case 2: 
-					selected = Heart;
-					break;
-				case 3: 
-					selected = Spade;
-					break;
+			for (Suit s : Suit.values()) {
+				if (s.getValue() == value) {
+					return s;
+				}
 			}
-			return selected;
+			return null;
 		}
 	}
 	
