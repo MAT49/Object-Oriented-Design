@@ -2,6 +2,8 @@ package me.nonnon;
 
 import java.util.ArrayList;
 
+import com.sun.tools.javac.code.Attribute.Array;
+
 public class DeckOfCards {
 	// Design the data structures for a generic deck of cards. Explain how you
 	// would subclass the data structures to implement blackjack.
@@ -72,9 +74,57 @@ public class DeckOfCards {
 	}
 	
 	public class BlackJackHand extends Hand<BlackJackCard> {
-		/* There are multiple possible scores for ablackjack hand, since aces have
+		/* There are multiple possible scores for a blackjack hand, since aces have
 		 * multiple values. Return the highest possible score that's under 21, or the
 		 * lowest score that's over. */
+		
+		public int score() {
+			ArrayList<Integer> scores = possibleScore());
+			int maxUnder = Integer.MIN_VALUE;
+			int minOver = Integer.MAX_VALUE;
+			for (int score : scores) {
+				if (score > 21 && score < minOver) {
+					minOver = score;
+				} else if (score <= 21 && score > maxUnder) {
+					maxUnder = score;
+				}
+			}
+			return maxUnder == Integer.MIN_VALUE ? minOver : maxUnder;
+		}
+		
+		private ArrayList<Integer> possibleScores() {
+			ArrayList<Integer> scores = new ArrayList<Integer>();
+			if (cards.size() == 0) {
+				return scores;
+			}
+			for (BlackJackCard card : cards) {
+				addCardToScoreList(card, scores);
+			}
+			return scores;
+		}
+		
+		private void addCardToScoreList(BlackJackCard card, ArrayList<Integer> scores) {
+			if (scores.size() == 0) {
+				scores.add(0);
+			}
+			int length = scores.size();
+			for (int i = 0; i < length; i++) {
+				int score = scores.get(i);
+				scores.set(i,  score + card.minValue());
+				if (card.minValue() != card.maxValue()) {
+					scores.add(score + card.maxValue());
+				}
+			}
+		}
+		
+		/* return a list of all possible scores this hand could have - evaluating each ace
+		 * as both 1 and 11 */
+		
+		
+		public boolean busted() { return score() > 21; }
+		public boolean is21() { return score() == 21; }
+		public boolean isBlackJack() { }
+		
 		
 	}
 	
