@@ -2,8 +2,6 @@ package me.nonnon;
 
 import java.util.ArrayList;
 
-import com.sun.tools.javac.code.Attribute.Array;
-
 public class DeckOfCards {
 	// Design the data structures for a generic deck of cards. Explain how you
 	// would subclass the data structures to implement blackjack.
@@ -79,7 +77,7 @@ public class DeckOfCards {
 		 * lowest score that's over. */
 		
 		public int score() {
-			ArrayList<Integer> scores = possibleScore());
+			ArrayList<Integer> scores = possibleScores();
 			int maxUnder = Integer.MIN_VALUE;
 			int minOver = Integer.MAX_VALUE;
 			for (int score : scores) {
@@ -91,6 +89,8 @@ public class DeckOfCards {
 			}
 			return maxUnder == Integer.MIN_VALUE ? minOver : maxUnder;
 		}
+		/* return a list of all possible scores this hand could have - evaluating each ace
+		 * as both 1 and 11 */	
 		
 		private ArrayList<Integer> possibleScores() {
 			ArrayList<Integer> scores = new ArrayList<Integer>();
@@ -116,14 +116,16 @@ public class DeckOfCards {
 				}
 			}
 		}
-		
-		/* return a list of all possible scores this hand could have - evaluating each ace
-		 * as both 1 and 11 */
-		
-		
 		public boolean busted() { return score() > 21; }
 		public boolean is21() { return score() == 21; }
-		public boolean isBlackJack() { }
+		public boolean isBlackJack() {
+			if (cards.size() != 2) {
+				return false;
+			}
+			BlackJackCard first = cards.get(0);
+			BlackJackCard second = cards.get(1);
+			return (first.isAce() && second.isFaceCard()) || (second.isAce() && first.isFaceCard());
+		}
 		
 		
 	}
